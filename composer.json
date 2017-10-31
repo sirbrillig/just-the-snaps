@@ -1,0 +1,24 @@
+{
+    "name": "sirbrillig/just-the-snaps",
+    "description": "A snapshot testing library for PHP",
+    "type": "library",
+    "license": "MIT",
+    "scripts": {
+        "test": "vendor/bin/phpunit --bootstrap vendor/autoload.php tests"
+    },
+    "autoload": {
+        "psr-0": {
+            "JustSnaps": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Payton Swick",
+            "email": "payton@foolord.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    }
+}

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace JustSnaps;
 
@@ -11,7 +12,7 @@ class Asserter {
 		$this->matcher = $matcher;
 	}
 
-	public function forTest(string $testName) {
+	public function forTest(string $testName): TestAsserter {
 		return new TestAsserter($testName, $this->driver, $this->matcher);
 	}
 }

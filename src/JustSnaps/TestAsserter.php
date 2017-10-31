@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace JustSnaps;
 
@@ -14,7 +15,7 @@ class TestAsserter {
 		$this->driver = $driver;
 	}
 
-	public function assertMatchesSnapshot($actual) {
+	public function assertMatchesSnapshot($actual): bool {
 		$expected = $this->driver->getSnapshotForTest($this->testName);
 		return $this->matcher->doesSnapshotMatch($expected, $actual);
 	}

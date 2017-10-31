@@ -31,5 +31,6 @@
     <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
     <rule ref="Generic.Classes.OpeningBraceSameLine"/>
 
+    <!-- variables: https://github.com/sirbrillig/VariableAnalysis/ -->
     <rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis"/>
 </ruleset>

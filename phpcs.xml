@@ -30,4 +30,6 @@
     <!-- bracers -->
     <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
     <rule ref="Generic.Classes.OpeningBraceSameLine"/>
+
+    <rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis"/>
 </ruleset>

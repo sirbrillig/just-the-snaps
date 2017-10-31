@@ -10,7 +10,7 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 			'foobar' => $snap_file_data,
 		] );
 		$matcher = new JustSnaps\Matcher();
-		$snaps = new JustSnaps\Asserter( $snap_file_driver, $matcher );
-		$this->assertTrue( $snaps->assertMatchesSnapshot( 'foobar', $data ) );
+		$asserter = new JustSnaps\Asserter( $snap_file_driver, $matcher );
+		$this->assertTrue( $asserter->forTest( 'foobar' )->assertMatchesSnapshot( $data ) );
 	}
 }

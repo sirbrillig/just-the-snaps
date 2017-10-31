@@ -11,8 +11,7 @@ class Asserter {
 		$this->matcher = $matcher;
 	}
 
-	public function assertMatchesSnapshot( string $testName, $actual ) {
-		$expected = $this->driver->getSnapshotForTest( $testName );
-		return $this->matcher->doesSnapshotMatch( $expected, $actual );
+	public function forTest( string $testName ) {
+		return new TestAsserter( $testName, $this->driver, $this->matcher );
 	}
 }

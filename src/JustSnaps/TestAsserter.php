@@ -8,14 +8,14 @@ class TestAsserter {
 	private $matcher;
 	private $driver;
 
-	public function __construct( string $testName, FileDriver $driver, Matcher $matcher ) {
+	public function __construct(string $testName, FileDriver $driver, Matcher $matcher) {
 		$this->testName = $testName;
 		$this->matcher = $matcher;
 		$this->driver = $driver;
 	}
 
-	public function assertMatchesSnapshot( $actual ) {
-		$expected = $this->driver->getSnapshotForTest( $this->testName );
-		return $this->matcher->doesSnapshotMatch( $expected, $actual );
+	public function assertMatchesSnapshot($actual) {
+		$expected = $this->driver->getSnapshotForTest($this->testName);
+		return $this->matcher->doesSnapshotMatch($expected, $actual);
 	}
 }

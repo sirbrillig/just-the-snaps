@@ -11,14 +11,14 @@ class FileDriverDirectory implements FileDriverProvider {
 	}
 
 	public function doesSnapshotExistForTest(string $testName): bool {
-		$snapshotFile = $this->dirName . DIRECTORY_SEPARATOR . $testName;
+		$snapshotFile = $this->getSnapshotFileName($testName);
 		if (! file_exists($snapshotFile)) {
 			return false;
 		}
 		return true;
 	}
 
-	public function getSnapshotForTest(string $testName) {
+	public function getSnapshotForTest(string $testName): string {
 		$snapshotFile = $this->getSnapshotFileName($testName);
 		if (! file_exists($snapshotFile)) {
 			return null;
@@ -26,11 +26,17 @@ class FileDriverDirectory implements FileDriverProvider {
 		return file_get_contents($snapshotFile);
 	}
 
-	public function createSnapshotForTest(string $testName, $actual) {
+	public function createSnapshotForTest(string $testName, $actual): void {
 		file_put_contents($this->getSnapshotFileName($testName), json_encode($actual));
 	}
 
-	private function getSnapshotFileName(string $testName) {
-		return $this->dirName . DIRECTORY_SEPARATOR . $testName;
+	public function removeSnapshotForTest(string $testName): void {
+		if ($this->doesSnapshotExistForTest($testName)) {
+			unlink($this->getSnapshotFileName($testName));
+		}
+	}
+
+	private function getSnapshotFileName(string $testName): string {
+		return $this->dirName . DIRECTORY_SEPARATOR . $testName . '.snap';
 	}
 }

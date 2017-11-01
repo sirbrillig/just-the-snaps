@@ -85,8 +85,8 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$data = [
 			'a' => 'b',
 		];
-		// TODO: delete all snapshots first
 		$snap_file_driver = FileDriver::buildWithDirectory('./tests/__snapshots__');
+		$snap_file_driver->removeSnapshotForTest('foobar');
 		$matcher = new Matcher();
 		$asserter = new Asserter($snap_file_driver, $matcher);
 		try {
@@ -95,6 +95,6 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 			$err; // noop
 		}
 		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
-		// TODO: delete all snapshots after
+		$snap_file_driver->removeSnapshotForTest('foobar');
 	}
 }

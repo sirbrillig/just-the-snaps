@@ -14,11 +14,17 @@ class FileDriverArray implements FileDriverProvider {
 		return array_key_exists($testName, $this->cachedData);
 	}
 
-	public function getSnapshotForTest(string $testName) {
+	public function getSnapshotForTest(string $testName): string {
 		return $this->cachedData[ $testName ] ?? null;
 	}
 
-	public function createSnapshotForTest(string $testName, $actual) {
+	public function createSnapshotForTest(string $testName, $actual): void {
 		$this->cachedData[ $testName ] = json_encode($actual);
+	}
+
+	public function removeSnapshotForTest(string $testName): void {
+		if ($this->doesSnapshotExistForTest($testName)) {
+			unset($this->cachedData[ $testName ]);
+		}
 	}
 }

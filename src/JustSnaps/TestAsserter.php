@@ -9,7 +9,7 @@ class TestAsserter {
 	private $matcher;
 	private $driver;
 
-	public function __construct(string $testName, FileDriver $driver, Matcher $matcher) {
+	public function __construct(string $testName, FileDriverProvider $driver, Matcher $matcher) {
 		$this->testName = $testName;
 		$this->matcher = $matcher;
 		$this->driver = $driver;

@@ -7,7 +7,7 @@ class Asserter {
 	private $driver;
 	private $matcher;
 
-	public function __construct(FileDriver $driver, Matcher $matcher) {
+	public function __construct(FileDriverProvider $driver, Matcher $matcher) {
 		$this->driver = $driver;
 		$this->matcher = $matcher;
 	}

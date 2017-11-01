@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4efc5d4efe5cee7f59c71336f8e9abfe",
-    "content-hash": "99a7bb4bbbda70aa14e9927cb7cc8a28",
+    "hash": "01d84694c89a9eda126c35bff6ce5957",
+    "content-hash": "ba6a1d338b98ea1d3fa5e432dd55737b",
     "packages": [],
     "packages-dev": [
         {
@@ -1440,16 +1440,16 @@
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
-            "version": "dev-master",
+            "version": "v1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sirbrillig/VariableAnalysis.git",
-                "reference": "d650ca2ed0d324548c1f580500010f3dec6ea99d"
+                "url": "https://github.com/sirbrillig/phpcs-variable-analysis.git",
+                "reference": "6f34e7d5c38871239958cdcb681e547799fc8285"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sirbrillig/VariableAnalysis/zipball/d650ca2ed0d324548c1f580500010f3dec6ea99d",
-                "reference": "d650ca2ed0d324548c1f580500010f3dec6ea99d",
+                "url": "https://api.github.com/repos/sirbrillig/phpcs-variable-analysis/zipball/6f34e7d5c38871239958cdcb681e547799fc8285",
+                "reference": "6f34e7d5c38871239958cdcb681e547799fc8285",
                 "shasum": ""
             },
             "type": "phpcodesniffer-standard",
@@ -1464,7 +1464,7 @@
                 }
             ],
             "description": "A PHPCS sniff to detect problems with variables.",
-            "time": "2017-11-01 16:49:39"
+            "time": "2017-11-01 17:42:07"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -1610,9 +1610,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "sirbrillig/phpcs-variable-analysis": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

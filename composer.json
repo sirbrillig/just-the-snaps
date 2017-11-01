@@ -20,7 +20,7 @@
     "require": {},
     "require-dev": {
         "phpunit/phpunit": "^6.4",
-        "sirbrillig/phpcs-variable-analysis": "dev-master",
+        "sirbrillig/phpcs-variable-analysis": "^1.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
     }
 }

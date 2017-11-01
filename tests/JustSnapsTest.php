@@ -17,6 +17,17 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
 	}
 
+	public function testAssertMatchesSnapshotThrowsExceptionIfMissing() {
+		$data = [
+			'a' => 'b',
+		];
+		$snapFileDriver = FileDriver::buildWithData([]);
+		$matcher = new Matcher();
+		$asserter = new Asserter($snapFileDriver, $matcher);
+		$this->expectException(CreatedSnapshotException::class);
+		$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+	}
+
 	public function testAssertMatchesSnapshotCreatesSnapshotIfMissing() {
 		$data = [
 			'a' => 'b',
@@ -129,5 +140,25 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		}
 		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
 		$snapFileDriver->removeSnapshotForTest('foobar');
+	}
+
+	public function testSnapshotNotCreatedIfCreatingIsDisabled() {
+		$data = [
+			'a' => 'b',
+		];
+		$snapFileDriver = FileDriver::makeReadOnly(FileDriver::buildWithData([]));
+		$matcher = new Matcher();
+		$asserter = new Asserter($snapFileDriver, $matcher);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+			$this->fail();
+		}
+		$this->assertFalse($asserter->forTest('foobar')->assertMatchesSnapshot($data));
+	}
+
+	public function testSnapshotDataIsPassedThroughSerializer() {
+		$this->markTestIncomplete('not implemented');
 	}
 }

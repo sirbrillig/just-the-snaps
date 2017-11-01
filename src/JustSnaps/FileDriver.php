@@ -11,4 +11,8 @@ class FileDriver {
 	public static function buildWithDirectory(string $dirName): FileDriverProvider {
 		return new FileDriverDirectory($dirName);
 	}
+
+	public static function makeReadOnly(FileDriverProvider $provider): FileDriverProvider {
+		return new FileDriverReadOnlyWrapper($provider);
+	}
 }

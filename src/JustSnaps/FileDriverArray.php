@@ -10,6 +10,10 @@ class FileDriverArray implements FileDriverProvider {
 		$this->cachedData = $data ?? [];
 	}
 
+	public function doesSnapshotExistForTest(string $testName): bool {
+		return array_key_exists($testName, $this->cachedData);
+	}
+
 	public function getSnapshotForTest(string $testName) {
 		return $this->cachedData[ $testName ] ?? null;
 	}

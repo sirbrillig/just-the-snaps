@@ -5,4 +5,5 @@ namespace JustSnaps;
 
 interface FileDriverProvider {
 	public function getSnapshotForTest(string $testName);
+	public function doesSnapshotExistForTest(string $testName): bool;
 }

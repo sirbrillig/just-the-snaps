@@ -19,10 +19,18 @@ class FileDriverDirectory implements FileDriverProvider {
 	}
 
 	public function getSnapshotForTest(string $testName) {
-		$snapshotFile = $this->dirName . DIRECTORY_SEPARATOR . $testName;
+		$snapshotFile = $this->getSnapshotFileName($testName);
 		if (! file_exists($snapshotFile)) {
 			return null;
 		}
 		return file_get_contents($snapshotFile);
+	}
+
+	public function createSnapshotForTest(string $testName, $actual) {
+		file_put_contents($this->getSnapshotFileName($testName), json_encode($actual));
+	}
+
+	private function getSnapshotFileName(string $testName) {
+		return $this->dirName . DIRECTORY_SEPARATOR . $testName;
 	}
 }

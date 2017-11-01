@@ -17,7 +17,8 @@ class TestAsserter {
 
 	public function assertMatchesSnapshot($actual): bool {
 		if (! $this->driver->doesSnapshotExistForTest($this->testName)) {
-			return false;
+			$this->driver->createSnapshotForTest($this->testName, $actual);
+			throw new CreatedSnapshotException('Created snapshot for ' . $this->testName . '; please run the test again.');
 		}
 		$expected = $this->driver->getSnapshotForTest($this->testName);
 		return $this->matcher->doesSnapshotMatch($expected, $actual);

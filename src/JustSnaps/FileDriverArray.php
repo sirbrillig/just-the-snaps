@@ -17,4 +17,8 @@ class FileDriverArray implements FileDriverProvider {
 	public function getSnapshotForTest(string $testName) {
 		return $this->cachedData[ $testName ] ?? null;
 	}
+
+	public function createSnapshotForTest(string $testName, $actual) {
+		$this->cachedData[ $testName ] = json_encode($actual);
+	}
 }

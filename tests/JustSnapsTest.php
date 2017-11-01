@@ -17,6 +17,21 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
 	}
 
+	public function testAssertMatchesSnapshotCreatesSnapshotIfMissing() {
+		$data = [
+			'a' => 'b',
+		];
+		$snap_file_driver = FileDriver::buildWithData([]);
+		$matcher = new Matcher();
+		$asserter = new Asserter($snap_file_driver, $matcher);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+		}
+		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
+	}
+
 	public function testFileDriverDirectory() {
 		$data = [
 			'a' => 'b',
@@ -24,6 +39,11 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$snap_file_driver = FileDriver::buildWithDirectory('./tests/__snapshots__');
 		$matcher = new Matcher();
 		$asserter = new Asserter($snap_file_driver, $matcher);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+		}
 		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
 	}
 }

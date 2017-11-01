@@ -15,4 +15,8 @@ class FileDriver {
 	public static function makeReadOnly(FileDriverProvider $provider): FileDriverProvider {
 		return new FileDriverReadOnlyWrapper($provider);
 	}
+
+	public static function addSerializer(Serializer $serializer, FileDriverProvider $provider): FileDriverProvider {
+		return new FileDriverWithSerializer($serializer, $provider);
+	}
 }

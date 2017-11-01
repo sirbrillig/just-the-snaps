@@ -8,9 +8,9 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$data = [
 			'a' => 'b',
 		];
-		$snap_file_data = json_encode($data);
+		$encodedData = json_encode($data);
 		$snapFileDriver = FileDriver::buildWithData([
-			'foobar' => $snap_file_data,
+			'foobar' => $encodedData,
 		]);
 		$matcher = new Matcher();
 		$asserter = new Asserter($snapFileDriver, $matcher);
@@ -158,7 +158,57 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse($asserter->forTest('foobar')->assertMatchesSnapshot($data));
 	}
 
-	public function testSnapshotDataIsPassedThroughSerializer() {
-		$this->markTestIncomplete('not implemented');
+	public function testAssertMatchesSnapshotWorksWithSerializer() {
+		$data = [
+			'a' => 'b',
+		];
+		$printer = new class implements SerializerPrinter {
+			public function serializeData($outputData) {
+				$outputData['serialized'] = 'yup';
+				return $outputData;
+			}
+		};
+		$tester = new class implements SerializerTester {
+			public function shouldSerialize($outputData): bool {
+				return is_array($outputData);
+			}
+		};
+		$serializer = new Serializer($tester, $printer);
+		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
+		$matcher = new Matcher();
+		$asserter = new Asserter($snapFileDriver, $matcher);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+		}
+		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
+	}
+
+	public function testSnapshotDataIsPassedThroughMatchingSerializer() {
+		$data = [
+			'a' => 'b',
+		];
+		$printer = new class implements SerializerPrinter {
+			public function serializeData($outputData) {
+				$outputData['serialized'] = 'yup';
+				return $outputData;
+			}
+		};
+		$tester = new class implements SerializerTester {
+			public function shouldSerialize($outputData): bool {
+				return is_array($outputData);
+			}
+		};
+		$serializer = new Serializer($tester, $printer);
+		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
+		$matcher = new Matcher();
+		$asserter = new Asserter($snapFileDriver, $matcher);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+		}
+		$this->assertEquals('{"a":"b","serialized":"yup"}', $snapFileDriver->getSnapshotForTest('foobar'));
 	}
 }

@@ -48,6 +48,23 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse($asserter->forTest('foobar')->assertMatchesSnapshot($data));
 	}
 
+	public function testAssertMatchesSnapshotFailsIfSnapshotRemoved() {
+		$data = [
+			'a' => 'b',
+		];
+		$snap_file_driver = FileDriver::buildWithData([]);
+		$matcher = new Matcher();
+		$asserter = new Asserter($snap_file_driver, $matcher);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+		}
+		$snap_file_driver->removeSnapshotForTest('foobar');
+		$this->expectException(CreatedSnapshotException::class);
+		$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+	}
+
 	public function testAssertMatchesSnapshotFailsIfDataIsAdded() {
 		$data = [
 			'a' => 'b',

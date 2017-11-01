@@ -126,13 +126,13 @@ class JustSnapsTest extends \PHPUnit\Framework\TestCase {
 		$snapFileDriver->removeSnapshotForTest('foobar');
 	}
 
-	public function testBuildWithDirectory() {
+	public function testBuildSnapshotAsserter() {
 		$data = [
 			'a' => 'b',
 		];
 		$snapFileDriver = FileDriver::buildWithDirectory('./tests/__snapshots__');
 		$snapFileDriver->removeSnapshotForTest('foobar');
-		$asserter = buildWithDirectory('./tests/__snapshots__');
+		$asserter = buildSnapshotAsserter('./tests/__snapshots__');
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {

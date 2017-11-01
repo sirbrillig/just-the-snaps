@@ -32,5 +32,5 @@
     <rule ref="Generic.Classes.OpeningBraceSameLine"/>
 
     <!-- variables: https://github.com/sirbrillig/VariableAnalysis/ -->
-    <rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis"/>
+    <rule ref="phpcs-variable-analysis.CodeAnalysis.VariableAnalysis"/>
 </ruleset>

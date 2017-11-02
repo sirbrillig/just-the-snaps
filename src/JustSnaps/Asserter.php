@@ -5,6 +5,10 @@ namespace JustSnaps;
 
 /**
  * Factory to create instances of TestAsserter
+ *
+ * Each TestAsserter has a name which should be the name of the current test or
+ * a hash representing the current test. This name is used as a key to the
+ * FileDriverProvider to find or create a snapshot.
  */
 class Asserter {
 	private $driver;
@@ -18,6 +22,6 @@ class Asserter {
 	}
 
 	public function addSerializer(Serializer $serializer) {
-		$this->driver = FileDriver::addSerializer($serializer, $this->driver);
+		$this->driver = FileDriver::addSerializerToDriver($serializer, $this->driver);
 	}
 }

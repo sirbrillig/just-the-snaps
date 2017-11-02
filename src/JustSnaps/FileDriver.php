@@ -19,7 +19,14 @@ class FileDriver {
 		return new FileDriverReadOnlyWrapper($provider);
 	}
 
-	public static function addSerializer(Serializer $serializer, FileDriverProvider $provider): FileDriverProvider {
+	/**
+	 * Add a serializer to a FileDriverProvider
+	 *
+	 * @param Serializer $serializer The Serializer to add
+	 * @param FileDriverProvider $driver The driver to which to add the Serializer
+	 * @return FileDriverProvider The modified FileDriverProvider
+	 */
+	public static function addSerializerToDriver(Serializer $serializer, FileDriverProvider $provider): FileDriverProvider {
 		if ($provider instanceof FileDriverWithSerializer) {
 			$provider->addSerializer($serializer);
 			return $provider;

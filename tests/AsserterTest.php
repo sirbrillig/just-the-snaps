@@ -128,7 +128,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 			}
 		};
 		$serializer = new Serializer($tester, $printer);
-		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
+		$snapFileDriver = FileDriver::addSerializerToDriver($serializer, FileDriver::buildWithData([]));
 		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
@@ -152,7 +152,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 			}
 		};
 		$serializer = new Serializer($tester, $printer);
-		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
+		$snapFileDriver = FileDriver::addSerializerToDriver($serializer, FileDriver::buildWithData([]));
 		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
@@ -176,7 +176,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 			}
 		};
 		$serializer = new Serializer($tester, $printer);
-		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
+		$snapFileDriver = FileDriver::addSerializerToDriver($serializer, FileDriver::buildWithData([]));
 		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);

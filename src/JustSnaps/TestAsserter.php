@@ -20,13 +20,26 @@ class TestAsserter {
 	/**
 	 * Create a new TestAsserter for a test
 	 *
-	 * @param {string} $testName The name of the test to use as a key for the snapshot
+	 * @param string $testName The name of the test to use as a key for the snapshot
+	 * @param FileDriverProvider $driver The driver to use to get/create snapshots
 	 */
 	public function __construct(string $testName, FileDriverProvider $driver) {
 		$this->testName = $testName;
 		$this->driver = $driver;
 	}
 
+	/**
+	 * Return true if the passed argument matches the snapshot
+	 *
+	 * The testName of this object is used to determine which snapshot to compare.
+	 *
+	 * Note that most drivers (except FileDriverReadOnlyWrapper) will create a
+	 * snapshot none exists for this testName. In that case, this method will
+	 * throw a CreatedSnapshotException (which should mark the test as Skipped).
+	 *
+	 * @param mixed $actual The data to compare to the snapshot
+	 * @return bool True if $actual is the same as its snapshot
+	 */
 	public function assertMatchesSnapshot($actual): bool {
 		if (! $this->driver->doesSnapshotExistForTest($this->testName)) {
 			$this->driver->createSnapshotForTest($this->testName, $actual);

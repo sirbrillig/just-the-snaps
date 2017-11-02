@@ -15,4 +15,8 @@ class Asserter {
 	public function forTest(string $testName): TestAsserter {
 		return new TestAsserter($testName, $this->driver, $this->matcher);
 	}
+
+	public function addSerializer(Serializer $serializer) {
+		$this->driver = new FileDriverWithSerializer($serializer, $this->driver);
+	}
 }

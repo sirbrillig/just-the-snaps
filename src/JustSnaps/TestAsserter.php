@@ -15,7 +15,6 @@ namespace JustSnaps;
 class TestAsserter {
 
 	private $testName;
-	private $matcher;
 	private $driver;
 
 	/**
@@ -23,9 +22,8 @@ class TestAsserter {
 	 *
 	 * @param {string} $testName The name of the test to use as a key for the snapshot
 	 */
-	public function __construct(string $testName, FileDriverProvider $driver, Matcher $matcher) {
+	public function __construct(string $testName, FileDriverProvider $driver) {
 		$this->testName = $testName;
-		$this->matcher = $matcher;
 		$this->driver = $driver;
 	}
 
@@ -39,8 +37,12 @@ class TestAsserter {
 		}
 		$expected = $this->driver->getSnapshotForTest($this->testName);
 		if ($this->driver instanceof FileDriverWithSerializer) {
-			return $this->matcher->doesSnapshotMatch($expected, $this->driver->serializeData($actual));
+			return $this->doesSnapshotMatch($expected, $this->driver->serializeData($actual));
 		}
-		return $this->matcher->doesSnapshotMatch($expected, $actual);
+		return $this->doesSnapshotMatch($expected, $actual);
+	}
+
+	private function doesSnapshotMatch($original, $actual) {
+		return ( $original === json_encode($actual) );
 	}
 }

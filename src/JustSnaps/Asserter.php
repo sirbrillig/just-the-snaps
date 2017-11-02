@@ -8,15 +8,13 @@ namespace JustSnaps;
  */
 class Asserter {
 	private $driver;
-	private $matcher;
 
-	public function __construct(FileDriverProvider $driver, Matcher $matcher) {
+	public function __construct(FileDriverProvider $driver) {
 		$this->driver = $driver;
-		$this->matcher = $matcher;
 	}
 
 	public function forTest(string $testName): TestAsserter {
-		return new TestAsserter($testName, $this->driver, $this->matcher);
+		return new TestAsserter($testName, $this->driver);
 	}
 
 	public function addSerializer(Serializer $serializer) {

@@ -5,5 +5,5 @@ namespace JustSnaps;
 
 function buildSnapshotAsserter(string $dirName) {
 	$fileDriver = FileDriver::buildWithDirectory($dirName);
-	return new Asserter($fileDriver, new Matcher());
+	return new Asserter($fileDriver);
 }

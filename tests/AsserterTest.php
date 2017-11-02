@@ -10,16 +10,14 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		$snapFileDriver = FileDriver::buildWithData([
 			'foobar' => $encodedData,
 		]);
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
 	}
 
 	public function testThrowsExceptionIfSnapshotIsMissing() {
 		$data = ['a' => 'b'];
 		$snapFileDriver = FileDriver::buildWithData([]);
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		$this->expectException(CreatedSnapshotException::class);
 		$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 	}
@@ -27,8 +25,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 	public function testCreatesSnapshotIfMissing() {
 		$data = ['a' => 'b'];
 		$snapFileDriver = FileDriver::buildWithData([]);
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -40,8 +37,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 	public function testFailsIfSnapshotIsDifferent() {
 		$data = ['a' => 'b'];
 		$snapFileDriver = FileDriver::buildWithData([]);
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -54,8 +50,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 	public function testFailsIfSnapshotIsRemoved() {
 		$data = ['a' => 'b'];
 		$snapFileDriver = FileDriver::buildWithData([]);
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -69,8 +64,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 	public function testFailsIfDataIsAdded() {
 		$data = ['a' => 'b'];
 		$snapFileDriver = FileDriver::buildWithData([]);
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -83,8 +77,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 	public function testFailsIfDataIsRemoved() {
 		$data = ['a' => 'b', 'c' => 'd'];
 		$snapFileDriver = FileDriver::buildWithData([]);
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -97,8 +90,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 	public function testDoesNotCreateSnapshotIfCreatingIsDisabled() {
 		$data = ['a' => 'b' ];
 		$snapFileDriver = FileDriver::makeReadOnly(FileDriver::buildWithData([]));
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -112,8 +104,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		$data = [ 'a' => 'b' ];
 		$snapFileDriver = FileDriver::buildWithDirectory('./tests/__snapshots__');
 		$snapFileDriver->removeSnapshotForTest('foobar');
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -138,8 +129,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		};
 		$serializer = new Serializer($tester, $printer);
 		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -163,8 +153,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		};
 		$serializer = new Serializer($tester, $printer);
 		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {
@@ -188,8 +177,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		};
 		$serializer = new Serializer($tester, $printer);
 		$snapFileDriver = FileDriver::addSerializer($serializer, FileDriver::buildWithData([]));
-		$matcher = new Matcher();
-		$asserter = new Asserter($snapFileDriver, $matcher);
+		$asserter = new Asserter($snapFileDriver);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
 		} catch (CreatedSnapshotException $err) {

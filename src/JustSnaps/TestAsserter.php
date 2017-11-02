@@ -3,12 +3,26 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * Performs comparison of a snapshot to actual data
+ *
+ * Should only be created by Asserter.
+ *
+ * Each TestAsserter has a name which should be the name of the current test or
+ * a hash representing the current test. This name is used as a key to the
+ * FileDriverProvider to find or create a snapshot.
+ */
 class TestAsserter {
 
 	private $testName;
 	private $matcher;
 	private $driver;
 
+	/**
+	 * Create a new TestAsserter for a test
+	 *
+	 * @param {string} $testName The name of the test to use as a key for the snapshot
+	 */
 	public function __construct(string $testName, FileDriverProvider $driver, Matcher $matcher) {
 		$this->testName = $testName;
 		$this->matcher = $matcher;

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * Tool to serialize data before being written to a snapshot
+ */
 class Serializer {
 	private $tester;
 	private $printer;

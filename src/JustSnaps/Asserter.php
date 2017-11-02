@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * Factory to create instances of TestAsserter
+ */
 class Asserter {
 	private $driver;
 	private $matcher;

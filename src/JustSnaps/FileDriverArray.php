@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * A snapshot driver that keeps its snapshots in memory
+ *
+ * Primarily this is for testing, since its snapshots cannot be saved to disk.
+ */
 class FileDriverArray implements FileDriverProvider {
 	private $cachedData;
 

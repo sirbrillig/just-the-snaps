@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * Wrapper for a FileDriverProvider to add Serializers
+ */
 class FileDriverWithSerializer implements FileDriverProvider {
 	private $provider;
 	private $serializers;

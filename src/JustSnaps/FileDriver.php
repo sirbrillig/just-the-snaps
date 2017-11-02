@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * Factory to create intances of FileDriverProvider
+ */
 class FileDriver {
 	public static function buildWithData(array $data): FileDriverProvider {
 		return new FileDriverArray($data);

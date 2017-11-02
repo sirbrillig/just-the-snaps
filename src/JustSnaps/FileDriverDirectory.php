@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * Snapshot driver that keeps its snapshots on disk
+ *
+ * The primary driver for snapshots.
+ */
 class FileDriverDirectory implements FileDriverProvider {
 	private $dirName;
 

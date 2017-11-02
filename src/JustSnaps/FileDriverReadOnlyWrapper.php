@@ -3,6 +3,12 @@ declare(strict_types=1);
 
 namespace JustSnaps;
 
+/**
+ * Wrapper for FileDriverProvider that prevents writing
+ *
+ * If it's necessary to prevent creating new snapshots, for example on a CI
+ * server, this wrapper will provide a read-only interface.
+ */
 class FileDriverReadOnlyWrapper implements FileDriverProvider {
 	private $provider;
 

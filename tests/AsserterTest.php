@@ -197,4 +197,73 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		}
 		$this->assertEquals('{"a":"b"}', $snapFileDriver->getSnapshotForTest('foobar'));
 	}
+
+	public function testAllowsAddingASerializerDirectly() {
+		$actual = [ 'foo' => 'bar', 'secret' => 'thisisasecretpassword' ];
+		$snapFileDriver = FileDriver::buildWithDirectory('./tests/__snapshots__');
+		$snapFileDriver->removeSnapshotForTest('foobar');
+		$printer = new class implements SerializerPrinter {
+			public function serializeData($outputData) {
+				if (isset($outputData['secret'])) {
+					$outputData['secret'] = 'xxx';
+				}
+				return $outputData;
+			}
+		};
+		$tester = new class implements SerializerTester {
+			public function shouldSerialize($outputData): bool {
+				return is_array($outputData);
+			}
+		};
+		$serializer = new Serializer($tester, $printer);
+		$asserter = \JustSnaps\buildSnapshotAsserter('./tests/__snapshots__');
+		$asserter->addSerializer($serializer);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($actual);
+		} catch (CreatedSnapshotException $err) {
+			$err; //noop
+		}
+		$this->assertEquals('{"foo":"bar","secret":"xxx"}', $snapFileDriver->getSnapshotForTest('foobar'));
+		$snapFileDriver->removeSnapshotForTest('foobar');
+	}
+
+	public function testAllowsAddingMultipleSerializers() {
+		$actual = [ 'foo' => 'bar', 'secret' => 'thisisasecretpassword' ];
+		$snapFileDriver = FileDriver::buildWithDirectory('./tests/__snapshots__');
+		$snapFileDriver->removeSnapshotForTest('foobar');
+		$printer1 = new class implements SerializerPrinter {
+			public function serializeData($outputData) {
+				$outputData['secret'] = 'xxx';
+				return $outputData;
+			}
+		};
+		$tester1 = new class implements SerializerTester {
+			public function shouldSerialize($outputData): bool {
+				return is_array($outputData) && isset($outputData['secret']);
+			}
+		};
+		$printer2 = new class implements SerializerPrinter {
+			public function serializeData($outputData) {
+				$outputData['color'] = 'blue';
+				return $outputData;
+			}
+		};
+		$tester2 = new class implements SerializerTester {
+			public function shouldSerialize($outputData): bool {
+				return is_array($outputData);
+			}
+		};
+		$serializer1 = new Serializer($tester1, $printer1);
+		$serializer2 = new Serializer($tester2, $printer2);
+		$asserter = \JustSnaps\buildSnapshotAsserter('./tests/__snapshots__');
+		$asserter->addSerializer($serializer1);
+		$asserter->addSerializer($serializer2);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($actual);
+		} catch (CreatedSnapshotException $err) {
+			$err; //noop
+		}
+		$this->assertEquals('{"foo":"bar","secret":"xxx","color":"blue"}', $snapFileDriver->getSnapshotForTest('foobar'));
+		$snapFileDriver->removeSnapshotForTest('foobar');
+	}
 }

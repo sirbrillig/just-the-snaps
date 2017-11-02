@@ -260,8 +260,10 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		$directory = './tests/snapshotdir/nonexistentsnapshotdirectory';
 		$snapFileDriver = FileDriver::buildWithDirectory($directory);
 		$snapshot = $snapFileDriver->getSnapshotFileName('foobar');
-		@unlink($snapshot);
-		@rmdir($directory);
+		$snapFileDriver->removeSnapshotForTest('foobar');
+		if (is_dir($directory)) {
+			$this->fail('Snapshot directory already exists: ' . $directory);
+		}
 		$asserter = \JustSnaps\buildSnapshotAsserter($directory);
 		try {
 			$asserter->forTest('foobar')->assertMatchesSnapshot($actual);
@@ -269,7 +271,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 			$err; //noop
 		}
 		$this->assertFileExists($snapshot);
-		unlink($snapshot);
+		$snapFileDriver->removeSnapshotForTest('foobar');
 		rmdir($directory);
 	}
 }

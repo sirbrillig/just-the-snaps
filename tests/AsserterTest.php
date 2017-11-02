@@ -254,4 +254,22 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals(['foo' => 'bar','secret' => 'xxx', 'color' => 'blue'], json_decode($snapFileDriver->getSnapshotForTest('foobar'), true));
 		$snapFileDriver->removeSnapshotForTest('foobar');
 	}
+
+	public function testCreatesSnapshotDirectoryIfMissing() {
+		$actual = [ 'foo' => 'bar' ];
+		$directory = './tests/snapshotdir/nonexistentsnapshotdirectory';
+		$snapFileDriver = FileDriver::buildWithDirectory($directory);
+		$snapshot = $snapFileDriver->getSnapshotFileName('foobar');
+		@unlink($snapshot);
+		@rmdir($directory);
+		$asserter = \JustSnaps\buildSnapshotAsserter($directory);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($actual);
+		} catch (CreatedSnapshotException $err) {
+			$err; //noop
+		}
+		$this->assertFileExists($snapshot);
+		unlink($snapshot);
+		rmdir($directory);
+	}
 }

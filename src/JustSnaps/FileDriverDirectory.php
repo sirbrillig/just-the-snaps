@@ -32,7 +32,12 @@ class FileDriverDirectory implements FileDriverProvider {
 	}
 
 	public function createSnapshotForTest(string $testName, $actual): void {
-		file_put_contents($this->getSnapshotFileName($testName), json_encode($actual));
+		$snapshot = $this->getSnapshotFileName($testName);
+		$dirName = dirname($snapshot);
+		if (! is_dir($dirName)) {
+			mkdir($dirName, 0777, true);
+		}
+		file_put_contents($snapshot, json_encode($actual));
 	}
 
 	public function removeSnapshotForTest(string $testName): void {
@@ -41,7 +46,7 @@ class FileDriverDirectory implements FileDriverProvider {
 		}
 	}
 
-	private function getSnapshotFileName(string $testName): string {
+	public function getSnapshotFileName(string $testName): string {
 		return $this->dirName . DIRECTORY_SEPARATOR . $testName . '.snap';
 	}
 }

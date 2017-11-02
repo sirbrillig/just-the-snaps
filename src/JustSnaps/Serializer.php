@@ -19,4 +19,17 @@ class Serializer {
 	public function serializeData($data) {
 		return $this->printer->serializeData($data);
 	}
+
+	public function apply($data) {
+		if ($this->shouldSerialize($data)) {
+			return $this->serializeData($data);
+		}
+		return $data;
+	}
+
+	public static function applySerializers(array $serializers, $data) {
+		return array_reduce($serializers, function ($serializedData, $serializer) {
+			return $serializer->apply($serializedData);
+		}, $data);
+	}
 }

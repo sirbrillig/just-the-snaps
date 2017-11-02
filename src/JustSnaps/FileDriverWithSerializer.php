@@ -5,11 +5,11 @@ namespace JustSnaps;
 
 class FileDriverWithSerializer implements FileDriverProvider {
 	private $provider;
-	private $serializer;
+	private $serializers;
 
 	public function __construct(Serializer $serializer, FileDriverProvider $provider) {
 		$this->provider = $provider;
-		$this->serializer = $serializer;
+		$this->serializers = [$serializer];
 	}
 
 	public function getSnapshotForTest(string $testName): string {
@@ -29,9 +29,10 @@ class FileDriverWithSerializer implements FileDriverProvider {
 	}
 
 	public function serializeData($actual) {
-		if ($this->serializer->shouldSerialize($actual)) {
-			return $this->serializer->serializeData($actual);
-		}
-		return $actual;
+		return Serializer::applySerializers($this->serializers, $actual);
+	}
+
+	public function addSerializer(Serializer $serializer): void {
+		$this->serializers[] = $serializer;
 	}
 }

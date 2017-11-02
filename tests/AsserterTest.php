@@ -195,7 +195,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		} catch (CreatedSnapshotException $err) {
 			$err; // noop
 		}
-		$this->assertEquals('{"a":"b"}', $snapFileDriver->getSnapshotForTest('foobar'));
+		$this->assertEquals(['a' => 'b'], json_decode($snapFileDriver->getSnapshotForTest('foobar'), true));
 	}
 
 	public function testAllowsAddingASerializerDirectly() {
@@ -223,7 +223,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		} catch (CreatedSnapshotException $err) {
 			$err; //noop
 		}
-		$this->assertEquals('{"foo":"bar","secret":"xxx"}', $snapFileDriver->getSnapshotForTest('foobar'));
+		$this->assertEquals(['foo' => 'bar','secret' => 'xxx'], json_decode($snapFileDriver->getSnapshotForTest('foobar'), true));
 		$snapFileDriver->removeSnapshotForTest('foobar');
 	}
 
@@ -263,7 +263,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		} catch (CreatedSnapshotException $err) {
 			$err; //noop
 		}
-		$this->assertEquals('{"foo":"bar","secret":"xxx","color":"blue"}', $snapFileDriver->getSnapshotForTest('foobar'));
+		$this->assertEquals(['foo' => 'bar','secret' => 'xxx', 'color' => 'blue'], json_decode($snapFileDriver->getSnapshotForTest('foobar'), true));
 		$snapFileDriver->removeSnapshotForTest('foobar');
 	}
 }

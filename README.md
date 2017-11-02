@@ -49,15 +49,13 @@ Here's an example of using a custom serializer to hide sensitive information.
 $actual = [ 'foo' => 'bar', 'secret' => 'thisisasecretpassword' ];
 $printer = new class implements SerializerPrinter {
 	public function serializeData($outputData) {
-		if ( isset($outputData['secret']) ) {
-			$outputData['secret'] = 'xxx';
-		}
+		$outputData['secret'] = 'xxx';
 		return $outputData;
 	}
 };
 $tester = new class implements SerializerTester {
 	public function shouldSerialize($outputData): bool {
-		return is_array($outputData);
+		return is_array($outputData) && isset($outputData['secret']);
 	}
 };
 $serializer = new Serializer($tester, $printer);

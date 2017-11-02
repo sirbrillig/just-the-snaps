@@ -8,11 +8,15 @@ This library intends to be:
 - Test runner agnostic.
 - Lightweight.
 
+See [phpunit-just-the-snaps](https://github.com/sirbrillig/phpunit-just-the-snaps) for a PHPUnit plugin that uses this library.
+
 **Still under development! API may change!**
 
 ## Installation
 
-Coming soon...
+```
+composer require --dev sirbrillig/just-the-snaps
+```
 
 ## Generic Usage
 

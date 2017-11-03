@@ -42,11 +42,13 @@ class TestAsserter {
 	 */
 	public function assertMatchesSnapshot($actual): bool {
 		if (! $this->driver->doesSnapshotExistForTest($this->testName)) {
+			// Note: FileDriverReadOnlyWrapper will make this call a noop
 			$this->driver->createSnapshotForTest($this->testName, $actual);
 			if ($this->driver instanceof FileDriverReadOnlyWrapper) {
 				return false;
 			}
-			throw new CreatedSnapshotException('Created snapshot for "' . $this->testName . '"; please run the test again.');
+			$createMessage = 'Created snapshot for "' . $this->testName . '"; please run the test again.';
+			throw new CreatedSnapshotException($createMessage);
 		}
 		$expected = $this->driver->getSnapshotForTest($this->testName);
 		if ($this->driver instanceof FileDriverWithSerializer) {

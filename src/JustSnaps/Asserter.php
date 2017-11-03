@@ -21,7 +21,7 @@ class Asserter {
 		return new TestAsserter($testName, $this->driver);
 	}
 
-	public function addSerializer(Serializer $serializer) {
+	public function addSerializer(Serializer $serializer): void {
 		$this->driver = FileDriver::addSerializerToDriver($serializer, $this->driver);
 	}
 }

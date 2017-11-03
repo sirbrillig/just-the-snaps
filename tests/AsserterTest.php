@@ -87,7 +87,7 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse($asserter->forTest('foobar')->assertMatchesSnapshot($dataChanged));
 	}
 
-	public function testDoesNotCreateSnapshotIfCreatingIsDisabled() {
+	public function testDoesNotThrowOnAMissingSnapshotIfCreatingIsDisabled() {
 		$data = ['a' => 'b' ];
 		$snapFileDriver = FileDriver::makeReadOnly(FileDriver::buildWithData([]));
 		$asserter = new Asserter($snapFileDriver);
@@ -98,6 +98,20 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 			$this->fail();
 		}
 		$this->assertFalse($asserter->forTest('foobar')->assertMatchesSnapshot($data));
+	}
+
+	public function testDoesNotCreateSnapshotIfCreatingIsDisabled() {
+		$data = ['a' => 'b' ];
+		$snapFileDriver = FileDriver::buildWithDirectory('./tests/__snapshots__');
+		$snapFileDriver->removeSnapshotForTest('foobar');
+		$asserter = new Asserter($snapFileDriver);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+		}
+		$this->assertThat(null, $this->logicalNot($this->fileExists($snapFileDriver->getSnapshotFileName('foobar'))));
+		$snapFileDriver->removeSnapshotForTest('foobar');
 	}
 
 	public function testMatchesWhenUsingFileBasedSnapshots() {
@@ -111,6 +125,20 @@ class AsserterTest extends \PHPUnit\Framework\TestCase {
 			$err; // noop
 		}
 		$this->assertTrue($asserter->forTest('foobar')->assertMatchesSnapshot($data));
+		$snapFileDriver->removeSnapshotForTest('foobar');
+	}
+
+	public function testCreatesSnapshotFileIfMissing() {
+		$data = ['a' => 'b' ];
+		$snapFileDriver = FileDriver::buildWithDirectory('./tests/__snapshots__');
+		$snapFileDriver->removeSnapshotForTest('foobar');
+		$asserter = new Asserter($snapFileDriver);
+		try {
+			$asserter->forTest('foobar')->assertMatchesSnapshot($data);
+		} catch (CreatedSnapshotException $err) {
+			$err; // noop
+		}
+		$this->assertFileExists($snapFileDriver->getSnapshotFileName('foobar'));
 		$snapFileDriver->removeSnapshotForTest('foobar');
 	}
 
